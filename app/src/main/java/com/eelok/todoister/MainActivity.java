@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import com.eelok.todoister.adapter.RecyclerViewAdapter;
 import com.eelok.todoister.entity.Priority;
 import com.eelok.todoister.entity.Task;
 import com.eelok.todoister.entity.TaskViewModel;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter recyclerViewAdapter;
     private int counter;
+    private BottomSheetFragment bottomSheetFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
-        taskViewModel = new ViewModelProvider
+        bottomSheetFragment = new BottomSheetFragment();
+        ConstraintLayout constraintLayout = findViewById(R.id.bottomSheet);
+        BottomSheetBehavior<ConstraintLayout> bottomSheetBehavior =
+                BottomSheetBehavior.from(constraintLayout);
+        bottomSheetBehavior.setPeekHeight(BottomSheetBehavior.STATE_HIDDEN);
+
+                taskViewModel = new ViewModelProvider
                 .AndroidViewModelFactory(MainActivity.this.getApplication())
                 .create(TaskViewModel.class);
 
@@ -56,22 +65,16 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
-
-
             @Override
             public void onClick(View view) {
-                Task task = new Task(
-                        "New Task " + counter++,
-                        Priority.MEDIUM,
-                        Calendar.getInstance().getTime(),
-                        Calendar.getInstance().getTime(),
-                        false);
-
-                taskViewModel.createNewTask(task);
+                showBottomSheetDialog();
             }
         });
     }
 
+    private void showBottomSheetDialog(){
+        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
