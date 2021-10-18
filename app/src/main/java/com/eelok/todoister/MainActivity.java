@@ -14,13 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eelok.todoister.adapter.RecyclerViewAdapter;
-import com.eelok.todoister.entity.Priority;
 import com.eelok.todoister.entity.Task;
 import com.eelok.todoister.entity.TaskViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {

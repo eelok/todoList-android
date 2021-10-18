@@ -127,7 +127,7 @@
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
         android:padding="@dimen/dimen_10"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/priority_todo_button">
@@ -161,7 +161,7 @@
         android:id="@+id/calendar_group"
         android:layout_width="280dp"
         android:layout_height="0dp"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:constraint_referenced_ids="calendar_view,next_week_chip,tomorrow_chip,today_chip,textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
