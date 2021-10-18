@@ -1,9 +1,6 @@
 package com.eelok.todoister;
 
-import android.app.Application;
-import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,24 +9,22 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.Group;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.eelok.todoister.entity.Priority;
 import com.eelok.todoister.entity.Task;
 import com.eelok.todoister.entity.TaskViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.Group;
-import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Calendar;
 import java.util.Date;
 
-public class BottomSheetFragment extends BottomSheetDialogFragment {
+public class BottomSheetFragment extends BottomSheetDialogFragment implements View.OnClickListener {
     private EditText enterTodo;
     private ImageButton calendarButton;
     private ImageButton priorityButton;
@@ -65,8 +60,11 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         saveButton = view.findViewById(R.id.save_todo_button);
 
         Chip todayChip = view.findViewById(R.id.today_chip);
+        todayChip.setOnClickListener(this);
         Chip tomorrowChip = view.findViewById(R.id.tomorrow_chip);
+        tomorrowChip.setOnClickListener(this);
         Chip nextWeekChip = view.findViewById(R.id.next_week_chip);
+        nextWeekChip.setOnClickListener(this);
 
         //todo ???
         taskViewModel = new ViewModelProvider
@@ -123,4 +121,21 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        selectedButtonId = v.getId();
+        if (selectedButtonId == R.id.today_chip) {
+            calendar.add(Calendar.DAY_OF_YEAR, 0);
+            dueDate = calendar.getTime();
+            Log.d("DAY", dueDate.toString());
+        } else if (selectedButtonId == R.id.tomorrow_chip) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+            dueDate = calendar.getTime();
+            Log.d("DAY", dueDate.toString());
+        } else if (selectedButtonId == R.id.next_week_chip) {
+            calendar.add(Calendar.DAY_OF_YEAR, 7);
+            dueDate = calendar.getTime();
+            Log.d("DAY", dueDate.toString());
+        }
+    }
 }
