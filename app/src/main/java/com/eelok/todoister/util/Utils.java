@@ -7,7 +7,7 @@ public class Utils {
 
     public static String formatDate(Date date){
         SimpleDateFormat simpleDateFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance();
-        simpleDateFormat.applyPattern("EEE, MM d");
+        simpleDateFormat.applyPattern("EEE, MMM dd");
         return simpleDateFormat.format(date);
     }
 

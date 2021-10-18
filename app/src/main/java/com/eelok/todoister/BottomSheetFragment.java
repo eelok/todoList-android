@@ -1,5 +1,7 @@
 package com.eelok.todoister;
 
+import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -25,6 +27,7 @@ import androidx.constraintlayout.widget.Group;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class BottomSheetFragment extends BottomSheetDialogFragment {
     private EditText enterTodo;
@@ -36,7 +39,11 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     private CalendarView calendarView;
     private Group calendarGroup;
 
+    private Date dueDate;
+    Calendar calendar = Calendar.getInstance();
+
     private TaskViewModel taskViewModel;
+
     public BottomSheetFragment() {
     }
 
@@ -75,18 +82,45 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 String userTodo = enterTodo.getText().toString().trim();
-                if(!TextUtils.isEmpty(userTodo)){
+                if (!TextUtils.isEmpty(userTodo) && dueDate != null) {
                     Task taskToInters = new Task(
                             userTodo,
                             Priority.HIGH,
-                            Calendar.getInstance().getTime(),
+                            dueDate,
                             Calendar.getInstance().getTime(),
                             false
                     );
-                    taskViewModel.createNewTask(taskToInters);
+                    TaskViewModel.createNewTask(taskToInters);
                 }
 
             }
         });
+
+        calendarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                TODO ?
+                calendarGroup.setVisibility(
+                        calendarGroup.getVisibility() == View.GONE ? View.VISIBLE : View.GONE
+                );
+
+
+            }
+        });
+
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
+                calendar.clear();
+                calendar.set(year, month, dayOfMonth);
+                dueDate = calendar.getTime();
+
+            }
+        });
+
+
     }
+
+
 }
